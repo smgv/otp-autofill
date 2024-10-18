@@ -10,10 +10,12 @@ export default function Home() {
   // const classVal = "text-teal-800";
 
   const [otp, setOtp] = useState("");
+  const [otpStatus, setOtpStatus] = useState("INITIALIZED");
 
   const handleOtpComplete = (val: string) => {
     setOtp(val);
   };
+
   return (
     <div className="flex flex-col gap-y-2 items-center justify-center h-screen">
       {/* <p>Hello World</p>
@@ -40,8 +42,13 @@ export default function Home() {
       <p>@www.example.com #123456</p>
       <br />
       <p>Enter OTP</p>
-      <OtpInput length={6} onComplete={handleOtpComplete} />
+      <OtpInput
+        length={6}
+        onComplete={handleOtpComplete}
+        getOtpAPIStatus={(val) => setOtpStatus(val)}
+      />
       <p>OTP: {otp || "- - - - - -"}</p>
+      <p>WEB OTP API Status: {otpStatus}</p>
       {/* <Checkbox id="1" />
       <Badge pill>Hello</Badge> */}
     </div>

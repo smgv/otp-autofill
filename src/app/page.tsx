@@ -10,7 +10,7 @@ export default function Home() {
   // const classVal = "text-teal-800";
 
   const [otp, setOtp] = useState("");
-  const [otpStatus, setOtpStatus] = useState("INITIALIZED");
+  // const [otpStatus, setOtpStatus] = useState("INITIALIZED");
 
   const handleOtpComplete = (val: string) => {
     setOtp(val);
@@ -45,10 +45,10 @@ export default function Home() {
       <OtpInput
         length={6}
         onComplete={handleOtpComplete}
-        getOtpAPIStatus={(val) => setOtpStatus(val)}
+        // getOtpAPIStatus={(val) => setOtpStatus(val)}
       />
       <p>OTP: {otp || "- - - - - -"}</p>
-      <p>WEB OTP API Status: {otpStatus}</p>
+      {/* <p>WEB OTP API Status: {otpStatus}</p> */}
       {/* <Checkbox id="1" />
       <Badge pill>Hello</Badge> */}
     </div>

@@ -53,15 +53,17 @@ export default function Home() {
       {/* <Checkbox id="1" />
       <Badge pill>Hello</Badge> */}
       <p>Label OTP:</p>
-      <input
-        type="text"
-        autoComplete="one-time-code"
-        inputMode="numeric"
-        maxLength={6}
-        pattern="\d{6}"
-        className="border border-gray-500 p-4 my-4"
-        placeholder="Enter OTP"
-      />
+      <form>
+        <input
+          type="text"
+          autoComplete="one-time-code"
+          inputMode="numeric"
+          maxLength={6}
+          pattern="\d{6}"
+          className="border border-gray-500 p-4 my-4"
+          placeholder="Enter OTP"
+        />
+      </form>
     </div>
   );
 }

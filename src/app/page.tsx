@@ -3,18 +3,18 @@
 // import { Badge, Checkbox } from "@toruslabs/react-components";
 // import { Toggle } from "@toruslabs/react-components";
 // import { cn } from "@toruslabs/react-components";
-import { OtpInput } from "@toruslabs/react-components";
-import { useState } from "react";
+// import { OtpInput } from "@toruslabs/react-components";
+// import { useState } from "react";
 
 export default function Home() {
   // const classVal = "text-teal-800";
 
-  const [otp, setOtp] = useState("");
+  // const [otp, setOtp] = useState("");
   // const [otpStatus, setOtpStatus] = useState("INITIALIZED");
 
-  const handleOtpComplete = (val: string) => {
-    setOtp(val);
-  };
+  // const handleOtpComplete = (val: string) => {
+  //   setOtp(val);
+  // };
 
   return (
     <div className="flex flex-col gap-y-2 items-center justify-center h-screen">
@@ -42,25 +42,29 @@ export default function Home() {
       <p>@www.example.com #123456</p>
       <br />
       <p>Enter OTP</p>
-      <OtpInput
+      {/* <OtpInput
         length={6}
         onComplete={handleOtpComplete}
         // getOtpAPIStatus={(val) => setOtpStatus(val)}
-      />
-      <p>OTP: {otp || "- - - - - -"}</p>
-      <p>V2 Changes</p>
+      /> */}
+      {/* <p>OTP: {otp || "- - - - - -"}</p> */}
+      <p>V3 Changes</p>
       {/* <p>WEB OTP API Status: {otpStatus}</p> */}
       {/* <Checkbox id="1" />
       <Badge pill>Hello</Badge> */}
-      <p>Label OTP:</p>
-      <form>
+
+      <form className="flex flex-col gap-y-1 my-4">
+        <label>Enter OTP:</label>
         <input
-          type="text"
+          type="number"
+          id="otp"
+          aria-label="otp"
+          name="otp"
           autoComplete="one-time-code"
           inputMode="numeric"
           maxLength={6}
           pattern="\d{6}"
-          className="border border-gray-500 p-4 my-4"
+          className="border border-gray-500 px-4 py-2 rounded-md"
           placeholder="Enter OTP"
         />
       </form>

@@ -48,6 +48,7 @@ export default function Home() {
         // getOtpAPIStatus={(val) => setOtpStatus(val)}
       />
       <p>OTP: {otp || "- - - - - -"}</p>
+      <p>V1 Changes</p>
       {/* <p>WEB OTP API Status: {otpStatus}</p> */}
       {/* <Checkbox id="1" />
       <Badge pill>Hello</Badge> */}

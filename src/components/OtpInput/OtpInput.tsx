@@ -48,35 +48,34 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
 
     const handleInputChange = (e: React.FormEvent, index: number) => {
       const { value } = e.target as HTMLInputElement;
-      alert(`Called Paste ${value})}`);
-      if (value && value.trim().length > 1) {
+      if (value && value.length > 1) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         // This is a workaround for dealing IOS does not fire onPaste event from sms auto-populate.
-        alert(`Called Paste ${value.trim()}`);
-        const e: any = {};
-        e.clipboardData = {
-          getData: () => value.trim(),
-        };
-        handlePaste(e);
+        alert(`Called Input ${value}`);
+        const newOtpArray = value.trim().split("");
+        setOtpArray(newOtpArray);
+        // Move the focus to the last input after pasting
+        inputRefs.current[length - 1]?.focus();
+        if (onComplete && length === newOtpArray.length)
+          onComplete(newOtpArray.join(""));
         return;
       } else {
-        if (/^\d$/.test(value)) {
-          const newOtpArray = [...otpArray];
-          newOtpArray[index] = value;
-          setOtpArray(newOtpArray);
-          const otp = newOtpArray.join("");
+        const otpValue = value.charAt(value.length - 1);
+        const newOtpArray = [...otpArray];
+        newOtpArray[index] = otpValue;
+        setOtpArray(newOtpArray);
+        const otp = newOtpArray.join("");
 
-          // Move focus to the next input
-          if (index < length - 1 && inputRefs.current[index + 1]) {
-            inputRefs.current[index + 1]?.focus();
-          }
-          if (onChange) {
-            onChange(newOtpArray.join(""));
-          }
-
-          if (onComplete && length === otp.length) onComplete(otp);
+        // Move focus to the next input
+        if (index < length - 1 && inputRefs.current[index + 1]) {
+          inputRefs.current[index + 1]?.focus();
         }
+        if (onChange) {
+          onChange(newOtpArray.join(""));
+        }
+
+        if (onComplete && length === otp.length) onComplete(otp);
       }
     };
 
@@ -114,31 +113,31 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
       };
     }, [timer]);
 
-    useEffect(() => {
-      if ("OTPCredential" in window) {
-        const input: any = document.querySelector(
-          "input[autocomplete='one-time-code']"
-        );
-        if (!input) return;
-        const ac = new AbortController();
-        (navigator.credentials as any)
-          .get({
-            otp: { transport: ["sms"] },
-            signal: ac.signal,
-          })
-          .then((otp: any) => {
-            const newOtpArray = otp.code.split("");
-            setOtpArray(newOtpArray);
-            if (onComplete && length === otp.code.length) {
-              onComplete(otp.code);
-            }
-            return ac.abort();
-          })
-          .catch((err: any) => {
-            console.log(err);
-          });
-      }
-    }, []);
+    // useEffect(() => {
+    //   if ("OTPCredential" in window) {
+    //     const input: any = document.querySelector(
+    //       "input[autocomplete='one-time-code']"
+    //     );
+    //     if (!input) return;
+    //     const ac = new AbortController();
+    //     (navigator.credentials as any)
+    //       .get({
+    //         otp: { transport: ["sms"] },
+    //         signal: ac.signal,
+    //       })
+    //       .then((otp: any) => {
+    //         const newOtpArray = otp.code.split("");
+    //         setOtpArray(newOtpArray);
+    //         if (onComplete && length === otp.code.length) {
+    //           onComplete(otp.code);
+    //         }
+    //         return ac.abort();
+    //       })
+    //       .catch((err: any) => {
+    //         console.log(err);
+    //       });
+    //   }
+    // }, []);
 
     const helperTextClass = cn(
       "text-xs font-normal text-app-gray-500 dark:text-app-white mt-2",
@@ -160,11 +159,11 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
               // eslint-disable-next-line react/no-array-index-key
               key={index}
               type="text"
-              maxLength={1}
+              // maxLength={1}
               value={digit}
               autoComplete="one-time-code"
               inputMode="numeric"
-              onInput={(e) => handleInputChange(e, index)}
+              onChange={(e) => handleInputChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               onPaste={handlePaste}
               className={cn(

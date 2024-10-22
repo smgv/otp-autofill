@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
   return (
-    <div className="flex flex-col gap-y-2 items-center justify-center h-screen">
-      <p>Version 1</p>
+    <div className="flex flex-col gap-y-2 items-center justify-center h-full w-full">
+      <p>Example 1</p>
       <form className="flex flex-col gap-y-1 my-4">
         <label>Enter OTP:</label>
         <input

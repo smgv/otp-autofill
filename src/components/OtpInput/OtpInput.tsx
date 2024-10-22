@@ -48,43 +48,44 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
 
     const handleInputChange = (e: React.ChangeEvent, index: number) => {
       const { value } = e.target as HTMLInputElement;
-      if (/^\d$/.test(value)) {
-        const newOtpArray = [...otpArray];
-        newOtpArray[index] = value;
-        setOtpArray(newOtpArray);
-        const otp = newOtpArray.join("");
+      if (value && value.trim().length > 1) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        // This is a workaround for dealing IOS does not fire onPaste event from sms auto-populate.
+        alert(`Called Paste ${value.trim()}`);
+        const e: any = {};
+        e.clipboardData = {
+          getData: () => value.trim(),
+        };
+        handlePaste(e);
+        return;
+      } else {
+        if (/^\d$/.test(value)) {
+          const newOtpArray = [...otpArray];
+          newOtpArray[index] = value;
+          setOtpArray(newOtpArray);
+          const otp = newOtpArray.join("");
 
-        // Move focus to the next input
-        if (index < length - 1 && inputRefs.current[index + 1]) {
-          inputRefs.current[index + 1]?.focus();
-        }
-        if (onChange) {
-          onChange(newOtpArray.join(""));
-        }
+          // Move focus to the next input
+          if (index < length - 1 && inputRefs.current[index + 1]) {
+            inputRefs.current[index + 1]?.focus();
+          }
+          if (onChange) {
+            onChange(newOtpArray.join(""));
+          }
 
-        if (onComplete && length === otp.length) onComplete(otp);
+          if (onComplete && length === otp.length) onComplete(otp);
+        }
       }
     };
 
     const handlePaste = (e: React.ClipboardEvent) => {
       const pastedData = e.clipboardData.getData("text").slice(0, length);
-
       if (/^\d+$/.test(pastedData) && pastedData.length === length) {
         const newOtpArray = pastedData.split("");
-        alert(`Called ${newOtpArray}`);
         setOtpArray(newOtpArray);
-
-        newOtpArray.forEach((digit, index) => {
-          if (inputRefs.current[index]) {
-            inputRefs.current[index]!.value = digit;
-          }
-        });
-
         // Move the focus to the last input after pasting
         inputRefs.current[length - 1]?.focus();
-        if (onChange) {
-          onChange(newOtpArray.join(""));
-        }
         if (onComplete && length === newOtpArray.length)
           onComplete(newOtpArray.join(""));
       }

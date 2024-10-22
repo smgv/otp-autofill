@@ -68,9 +68,17 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
 
     const handlePaste = (e: React.ClipboardEvent) => {
       const pastedData = e.clipboardData.getData("text").slice(0, length);
-      if (/^\d+$/.test(pastedData)) {
+
+      if (/^\d+$/.test(pastedData) && pastedData.length === length) {
         const newOtpArray = pastedData.split("");
         setOtpArray(newOtpArray);
+
+        newOtpArray.forEach((digit, index) => {
+          if (inputRefs.current[index]) {
+            inputRefs.current[index]!.value = digit;
+          }
+        });
+
         // Move the focus to the last input after pasting
         inputRefs.current[length - 1]?.focus();
         if (onChange) {

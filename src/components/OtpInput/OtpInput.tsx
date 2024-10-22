@@ -46,7 +46,7 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
       }
     };
 
-    const handleInputChange = (e: React.ChangeEvent, index: number) => {
+    const handleInputChange = (e: React.FormEvent, index: number) => {
       const { value } = e.target as HTMLInputElement;
       alert(`Called Paste ${value})}`);
       if (value && value.trim().length > 1) {
@@ -164,7 +164,7 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
               value={digit}
               autoComplete="one-time-code"
               inputMode="numeric"
-              onChange={(e) => handleInputChange(e, index)}
+              onInput={(e) => handleInputChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               onPaste={handlePaste}
               className={cn(

@@ -13,7 +13,10 @@ export type OtpInputClassesType =
   | "helperText";
 
 export interface OtpProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    "onChange" | "placeholder"
+  > {
   length: number;
   resendTimer?: number;
   error?: boolean;
@@ -28,4 +31,7 @@ export interface OtpProps
   showCta?: boolean;
   showTimer?: boolean;
   autoFocus?: boolean;
+  autoComplete?: HTMLInputElement["autocomplete"];
+  placeholder?: string | string[];
+  type?: "text" | "number" | "password";
 }

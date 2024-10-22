@@ -20,7 +20,12 @@ export default function Home() {
       </code>
       <br />
       <p>Enter OTP</p>
-      <OtpInput length={6} onComplete={handleOtpComplete} />
+      <OtpInput
+        length={6}
+        onComplete={handleOtpComplete}
+        // placeholder={["d", "d", "m", "m", "y", "y"]}
+        // type="password"
+      />
       <p>OTP: {otp || "- - - - - -"}</p>
     </div>
   );

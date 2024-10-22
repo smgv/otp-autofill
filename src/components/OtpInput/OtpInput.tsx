@@ -22,6 +22,9 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
       showCta = true,
       showTimer = true,
       autoFocus = false,
+      placeholder = "",
+      autoComplete = "one-time-code",
+      type = "text",
     },
     ref
   ) => {
@@ -53,6 +56,7 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
 
     const handleInputChange = (e: React.FormEvent, index: number) => {
       e.preventDefault();
+
       const { value } = e.target as HTMLInputElement;
       if (value && value.length > 1 && value.length === length) {
         const newOtpArray = value.split("");
@@ -136,12 +140,13 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
         <form className={cn("flex space-x-2", classes?.inputContainer)}>
           {otpArray.map((digit, index) => (
             <input
-              // eslint-disable-next-line react/no-array-index-key
               key={index}
-              type="text"
-              // maxLength={1}
+              type={type}
               value={digit}
-              autoComplete="one-time-code"
+              autoComplete={autoComplete}
+              placeholder={
+                Array.isArray(placeholder) ? placeholder[index] : placeholder
+              }
               inputMode="numeric"
               onPaste={handlePaste}
               onChange={(e) => handleInputChange(e, index)}

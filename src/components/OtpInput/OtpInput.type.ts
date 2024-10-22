@@ -12,7 +12,8 @@ export type OtpInputClassesType =
   | "disabled"
   | "helperText";
 
-export interface OtpProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
+export interface OtpProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
   length: number;
   resendTimer?: number;
   error?: boolean;
@@ -26,4 +27,5 @@ export interface OtpProps extends Omit<React.InputHTMLAttributes<HTMLInputElemen
   helperText?: string;
   showCta?: boolean;
   showTimer?: boolean;
+  autoFocus?: boolean;
 }

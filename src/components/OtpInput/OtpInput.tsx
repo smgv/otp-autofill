@@ -21,6 +21,7 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
       onResendTimer,
       showCta = true,
       showTimer = true,
+      autoFocus = false,
     },
     ref
   ) => {
@@ -47,15 +48,13 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
     };
 
     const isInputValueValid = (value: string) => {
-      const isTypeValid = /^\d$/.test(value);
-
-      return isTypeValid && value.trim().length === 1;
+      return /^\d$/.test(value) && value.trim().length === 1;
     };
 
     const handleInputChange = (e: React.FormEvent, index: number) => {
       e.preventDefault();
       const { value } = e.target as HTMLInputElement;
-      if (value && value.length > 1) {
+      if (value && value.length > 1 && value.length === length) {
         const newOtpArray = value.split("");
         setOtpArray(newOtpArray);
         inputRefs.current[length - 1]?.focus();
@@ -66,7 +65,6 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
         newOtpArray[index] = value;
         setOtpArray(newOtpArray);
         const otp = newOtpArray.join("");
-        console.log(inputRefs.current[index + 1]);
         // Move focus to the next input
         if (index < length - 1 && inputRefs.current[index + 1]) {
           inputRefs.current[index + 1]?.focus();
@@ -116,7 +114,7 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
     }, [timer]);
 
     useEffect(() => {
-      if (inputRefs) {
+      if (inputRefs && autoFocus) {
         inputRefs.current?.[0].focus();
       }
     }, []);

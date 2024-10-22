@@ -46,48 +46,50 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
       }
     };
 
+    const isInputValueValid = (value: string) => {
+      const isTypeValid = /^\d$/.test(value);
+
+      return isTypeValid && value.trim().length === 1;
+    };
+
     const handleInputChange = (e: React.FormEvent, index: number) => {
+      e.preventDefault();
       const { value } = e.target as HTMLInputElement;
       if (value && value.length > 1) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // This is a workaround for dealing IOS does not fire onPaste event from sms auto-populate.
-        alert(`Called Input ${value}`);
-        const newOtpArray = value.trim().split("");
+        const newOtpArray = value.split("");
         setOtpArray(newOtpArray);
-        // Move the focus to the last input after pasting
         inputRefs.current[length - 1]?.focus();
         if (onComplete && length === newOtpArray.length)
           onComplete(newOtpArray.join(""));
-        return;
-      } else {
-        const otpValue = value.charAt(value.length - 1);
+      } else if (isInputValueValid(value)) {
         const newOtpArray = [...otpArray];
-        newOtpArray[index] = otpValue;
+        newOtpArray[index] = value;
         setOtpArray(newOtpArray);
         const otp = newOtpArray.join("");
-
+        console.log(inputRefs.current[index + 1]);
         // Move focus to the next input
         if (index < length - 1 && inputRefs.current[index + 1]) {
           inputRefs.current[index + 1]?.focus();
         }
         if (onChange) {
-          onChange(newOtpArray.join(""));
+          onChange(value);
         }
-
         if (onComplete && length === otp.length) onComplete(otp);
       }
     };
 
     const handlePaste = (e: React.ClipboardEvent) => {
+      e.preventDefault();
       const pastedData = e.clipboardData.getData("text").slice(0, length);
-      if (/^\d+$/.test(pastedData) && pastedData.length === length) {
-        const newOtpArray = pastedData.split("");
-        setOtpArray(newOtpArray);
-        // Move the focus to the last input after pasting
-        inputRefs.current[length - 1]?.focus();
-        if (onComplete && length === newOtpArray.length)
-          onComplete(newOtpArray.join(""));
+      if (/^\d+$/.test(pastedData)) {
+        if (/^\d+$/.test(pastedData) && pastedData.length === length) {
+          const newOtpArray = pastedData.split("");
+          setOtpArray(newOtpArray);
+          // Move the focus to the last input after pasting
+          inputRefs.current[length - 1]?.focus();
+          if (onComplete && length === newOtpArray.length)
+            onComplete(newOtpArray.join(""));
+        }
       }
     };
 
@@ -113,31 +115,11 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
       };
     }, [timer]);
 
-    // useEffect(() => {
-    //   if ("OTPCredential" in window) {
-    //     const input: any = document.querySelector(
-    //       "input[autocomplete='one-time-code']"
-    //     );
-    //     if (!input) return;
-    //     const ac = new AbortController();
-    //     (navigator.credentials as any)
-    //       .get({
-    //         otp: { transport: ["sms"] },
-    //         signal: ac.signal,
-    //       })
-    //       .then((otp: any) => {
-    //         const newOtpArray = otp.code.split("");
-    //         setOtpArray(newOtpArray);
-    //         if (onComplete && length === otp.code.length) {
-    //           onComplete(otp.code);
-    //         }
-    //         return ac.abort();
-    //       })
-    //       .catch((err: any) => {
-    //         console.log(err);
-    //       });
-    //   }
-    // }, []);
+    useEffect(() => {
+      if (inputRefs) {
+        inputRefs.current?.[0].focus();
+      }
+    }, []);
 
     const helperTextClass = cn(
       "text-xs font-normal text-app-gray-500 dark:text-app-white mt-2",
@@ -163,9 +145,9 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
               value={digit}
               autoComplete="one-time-code"
               inputMode="numeric"
+              onPaste={handlePaste}
               onChange={(e) => handleInputChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              onPaste={handlePaste}
               className={cn(
                 "w-12 h-[42px] rounded-full border text-center text-xl focus:outline-none active:outline-none focus:border-app-primary-600 dark:focus:border-app-primary-500 border-app-gray-300 dark:border-app-gray-500 bg-app-gray-50 dark:bg-app-gray-700 text-app-gray-900 dark:text-app-white",
                 success &&

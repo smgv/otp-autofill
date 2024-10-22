@@ -71,6 +71,7 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
 
       if (/^\d+$/.test(pastedData) && pastedData.length === length) {
         const newOtpArray = pastedData.split("");
+        alert(`Called ${newOtpArray}`);
         setOtpArray(newOtpArray);
 
         newOtpArray.forEach((digit, index) => {

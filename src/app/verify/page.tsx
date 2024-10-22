@@ -20,7 +20,7 @@ export default function Home() {
         <p>Message Format:</p>
         <br />
         <p>Your verification code is 123456.</p>
-        <p>@www.example.com #123456</p>
+        <p>@otp-autofill-pi.vercel.app #123456</p>
       </code>
       <br />
       <p>Enter OTP</p>

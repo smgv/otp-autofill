@@ -30,7 +30,7 @@ export default function RootLayout({
       >
         {children}
         <footer className="text-gray-500 underline mt-auto text-center mb-4">
-          v1.0.2
+          v1.0.3
         </footer>
       </body>
     </html>

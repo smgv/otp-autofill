@@ -48,6 +48,7 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpProps>(
 
     const handleInputChange = (e: React.ChangeEvent, index: number) => {
       const { value } = e.target as HTMLInputElement;
+      alert(`Called Paste ${value})}`);
       if (value && value.trim().length > 1) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
